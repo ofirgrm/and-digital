@@ -2,9 +2,8 @@ package com.exercise.anddigital.controller;
 
 import com.exercise.anddigital.api.PhoneResult;
 import com.exercise.anddigital.service.CustomerService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +17,11 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping("{allphones}")
+    @ResponseStatus(HttpStatus.OK)
     public PhoneResult getAllCustomersPhoneNumbers() {
-        return null;
+        List<String> phones = this.customerService.getAllCustomersPhoneNumbers();
+        return new PhoneResult(phones);
     }
 
     public List<String> getCustomerPhoneNumbers(@PathVariable Long customerId) {
