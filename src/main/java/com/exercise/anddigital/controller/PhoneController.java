@@ -8,24 +8,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/phone")
+public class PhoneController {
 
     private CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    public PhoneController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-    @GetMapping("{allphones}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PhoneResult getAllCustomersPhoneNumbers() {
         List<String> phones = this.customerService.getAllCustomersPhoneNumbers();
         return new PhoneResult(phones);
     }
 
-    public List<String> getCustomerPhoneNumbers(@PathVariable Long customerId) {
-        return null;
+    @GetMapping("{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public PhoneResult getCustomerPhoneNumbers(@PathVariable Long customerId) {
+        List<String> phones = this.customerService.getCustomerPhoneNumbers(customerId);
+        return new PhoneResult(phones);
     }
 
     public void activatePhoneNumber(@PathVariable Long customerId,

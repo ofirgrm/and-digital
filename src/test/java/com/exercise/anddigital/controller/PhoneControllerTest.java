@@ -1,6 +1,8 @@
 package com.exercise.anddigital.controller;
 
+import com.exercise.anddigital.api.PhoneRequest;
 import com.exercise.anddigital.service.CustomerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -18,15 +20,17 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-public class CustomerControllerTest {
+
+public class PhoneControllerTest {
 
     @Mock
     private CustomerService customerService;
 
     @InjectMocks
-    private CustomerController controller;
+    private PhoneController controller;
 
     MockMvc mockMvc;
 
@@ -41,7 +45,7 @@ public class CustomerControllerTest {
         List<String> phoneNumbers = Stream.of("123","456").collect(Collectors.toList());
         when(customerService.getAllCustomersPhoneNumbers()).thenReturn(phoneNumbers);
 
-        mockMvc.perform(get("/api/customer/allphones")
+        mockMvc.perform(get("/api/phone")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.phones", hasSize(2)));
@@ -49,18 +53,34 @@ public class CustomerControllerTest {
 
     @Test
     public void getCustomerPhoneNumbers() throws Exception {
-
         List<String> phoneNumbers = Stream.of("123","456").collect(Collectors.toList());
         when(customerService.getCustomerPhoneNumbers(anyLong())).thenReturn(phoneNumbers);
 
-        mockMvc.perform(get("/api/customer/1")
+        mockMvc.perform(get("/api/phone/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.phones", hasSize(2)));
-
     }
 
     @Test
-    public void activatePhoneNumber() {
+    public void activatePhoneNumber() throws Exception {
+        List<String> phoneNumbers = Stream.of("123","456").collect(Collectors.toList());
+        when(customerService.getCustomerPhoneNumbers(anyLong())).thenReturn(phoneNumbers);
+
+        PhoneRequest phoneRequest = new PhoneRequest("(987) 654-1234");
+
+        mockMvc.perform(post("/api/phone/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(phoneRequest)))
+                .andExpect(status().isCreated());
     }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
