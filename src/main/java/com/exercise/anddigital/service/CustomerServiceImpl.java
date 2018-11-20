@@ -29,11 +29,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<String> getCustomerPhoneNumbers(Long customerId) {
-        return null;
+        return this.customerRepository.findCustomerById(customerId).getPhones()
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @Override
     public void activatePhoneNumber(Long customerId, String phoneNumber) {
 
     }
+
 }

@@ -22,6 +22,18 @@ public class CustomerRepository {
                 this.customers.put(customer.getId(), customer));
     }
 
+    public Customer findCustomerById(Long id) {
+        Objects.requireNonNull(id);
+        if (id > 0) {
+            if (this.customers.containsKey(id)) {
+                return this.customers.get(id);
+            } else {
+                throw new RuntimeException(String.format("Customer %d not found", id));
+            }
+        }
+        throw new RuntimeException("Illegal Key");
+    }
+
     public Set<Customer> findAllCustomers() {
         return customers.values().stream().collect(Collectors.toSet());
     }

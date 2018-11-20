@@ -51,7 +51,14 @@ public class CustomerServiceTest {
         List<String> phones = this.customerService.getCustomerPhoneNumbers(4l);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void getCustomerPhoneNumbersCustomerIllegalId() {
+        List<String> phones = this.customerService.getCustomerPhoneNumbers(-1l);
+    }
+
     @Test
     public void activatePhoneNumber() {
     }
+
+
 }
