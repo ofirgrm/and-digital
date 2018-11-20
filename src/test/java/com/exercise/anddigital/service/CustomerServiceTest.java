@@ -58,7 +58,20 @@ public class CustomerServiceTest {
 
     @Test
     public void activatePhoneNumber() {
+        this.customerService.activatePhoneNumber(1l, "987-654-3210");
+
+        List<String> phones = this.customerService.getCustomerPhoneNumbers(1l);
+
+        assertThat(phones.size(), is(4));
     }
 
+    @Test(expected = RuntimeException.class)
+    public void activatePhoneNumberCustomerNotFound() {
+        this.customerService.activatePhoneNumber(4l, "987-654-3210");
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void activatePhoneNumberPhoneAlreadyExists() {
+        this.customerService.activatePhoneNumber(4l, "(123) 456-7890");
+    }
 }

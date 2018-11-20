@@ -4,12 +4,16 @@ import com.exercise.anddigital.domain.Customer;
 import com.exercise.anddigital.repositories.CustomerRepository;
 import com.exercise.anddigital.repositories.PhoneRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 @Slf4j
-public class CustomerBootStrap {
+@Component
+public class CustomerBootStrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private CustomerRepository customerRepository;
     private PhoneRepository phoneRepository;
@@ -22,6 +26,11 @@ public class CustomerBootStrap {
     public CustomerBootStrap(CustomerRepository customerRepository, PhoneRepository phoneRepository) {
         this.customerRepository = customerRepository;
         this.phoneRepository = phoneRepository;
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        execute();
     }
 
     public void execute() {

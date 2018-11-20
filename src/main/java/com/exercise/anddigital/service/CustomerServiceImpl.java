@@ -36,7 +36,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void activatePhoneNumber(Long customerId, String phoneNumber) {
-
     }
 
 }
