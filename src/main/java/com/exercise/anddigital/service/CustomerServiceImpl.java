@@ -36,6 +36,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void activatePhoneNumber(Long customerId, String phoneNumber) {
+        if (this.phoneRepository.addPhoneNumber(phoneNumber)) {
+            this.customerRepository.findCustomerById(customerId)
+                    .getPhones().add(phoneNumber);
+        } else {
+            throw new RuntimeException(
+                    String.format("Phone number %d is already reserved", phoneNumber));
+        }
     }
 
 }
