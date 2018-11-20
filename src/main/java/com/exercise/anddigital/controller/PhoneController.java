@@ -31,9 +31,11 @@ public class PhoneController {
         return new PhoneResult(phones);
     }
 
+    @PostMapping("{customerId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public void activatePhoneNumber(@PathVariable Long customerId,
-                                    @PathVariable String phoneNumber) {
-
+                                    @RequestParam String phone) {
+        this.customerService.activatePhoneNumber(customerId, phone);
     }
 
 }

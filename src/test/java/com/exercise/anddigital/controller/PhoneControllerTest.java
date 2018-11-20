@@ -1,6 +1,5 @@
 package com.exercise.anddigital.controller;
 
-import com.exercise.anddigital.api.PhoneRequest;
 import com.exercise.anddigital.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -64,14 +63,9 @@ public class PhoneControllerTest {
 
     @Test
     public void activatePhoneNumber() throws Exception {
-        List<String> phoneNumbers = Stream.of("123","456").collect(Collectors.toList());
-        when(customerService.getCustomerPhoneNumbers(anyLong())).thenReturn(phoneNumbers);
-
-        PhoneRequest phoneRequest = new PhoneRequest("(987) 654-1234");
-
         mockMvc.perform(post("/api/phone/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(phoneRequest)))
+                .param("phone", "123"))
                 .andExpect(status().isCreated());
     }
 

@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
                     .getPhones().add(phoneNumber);
         } else {
             throw new RuntimeException(
-                    String.format("Phone number %d is already reserved", phoneNumber));
+                    String.format("Phone number %s is already reserved", phoneNumber));
         }
     }
 
