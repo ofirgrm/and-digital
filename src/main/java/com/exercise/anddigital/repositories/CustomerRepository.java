@@ -5,6 +5,8 @@ import com.exercise.anddigital.domain.Customer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -18,6 +20,10 @@ public class CustomerRepository {
         Objects.requireNonNull(customers);
         Stream.of(customers).forEach(customer ->
                 this.customers.put(customer.getId(), customer));
+    }
+
+    public Set<Customer> findAllCustomers() {
+        return customers.values().stream().collect(Collectors.toSet());
     }
 
 }

@@ -1,25 +1,32 @@
 package com.exercise.anddigital.service;
 
+import com.exercise.anddigital.bootstrap.CustomerBootStrap;
+import com.exercise.anddigital.repositories.CustomerRepository;
+import com.exercise.anddigital.repositories.PhoneRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class CustomerServiceTest {
 
     private CustomerService customerService;
+    private CustomerRepository customerRepository;
+    private PhoneRepository phoneRepository;
+    private CustomerBootStrap customerBootStrap;
 
     @Before
     public void setUp() throws Exception {
-        this.customerService = new CustomerServiceImpl();
+        this.customerRepository = new CustomerRepository();
+        this.phoneRepository = new PhoneRepository();
+        this.customerBootStrap = new CustomerBootStrap(this.customerRepository,
+                this.phoneRepository);
+        this.customerBootStrap.execute();
+        this.customerService = new CustomerServiceImpl(this.customerRepository,
+                this.phoneRepository);
     }
 
     @Test
