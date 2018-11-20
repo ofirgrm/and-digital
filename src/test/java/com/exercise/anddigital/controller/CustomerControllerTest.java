@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,7 +48,16 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getCustomerPhoneNumbers() {
+    public void getCustomerPhoneNumbers() throws Exception {
+
+        List<String> phoneNumbers = Stream.of("123","456").collect(Collectors.toList());
+        when(customerService.getCustomerPhoneNumbers(anyLong())).thenReturn(phoneNumbers);
+
+        mockMvc.perform(get("/api/customer/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.phones", hasSize(2)));
+
     }
 
     @Test
